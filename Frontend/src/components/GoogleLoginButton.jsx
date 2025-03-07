@@ -1,6 +1,6 @@
 import React from 'react';
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const googleId = import.meta.env.VITE_FIREBASE_GOOGLE_CLIENT_ID;

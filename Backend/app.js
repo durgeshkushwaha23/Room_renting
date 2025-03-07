@@ -2,8 +2,11 @@ import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./database/db.js"
 const app = express();
+
+
 import authRoutes from "./routes/auth.js"
 import roomRoutes from "./routes/roomRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
 
 import session from 'express-session';
 import cors from "cors"
@@ -18,6 +21,7 @@ app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // ✅ Parse URL-encoded form data
 
 // Set up session middleware
 app.use(session({
@@ -37,6 +41,8 @@ app.use("/api/auth", authRoutes);
 //room routes
 app.use("/api/rooms", roomRoutes);
 
+//user routes
+app.use("/api/users",userRoutes)
 
 
 
