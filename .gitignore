@@ -1,0 +1,28 @@
+# Ignore environment files
+.env
+Backend/.env
+Frontend/.env
+
+# Node modules (backend & frontend dono ke liye)
+node_modules/
+Backend/node_modules/
+Frontend/node_modules/
+
+# Logs
+*.log
+logs/
+Backend/logs/
+Frontend/logs/
+
+# VSCode settings (optional)
+.vscode/
+
+# Build files
+Backend/dist/
+Frontend/build/
+
+# Other unnecessary files
+.DS_Store
+Thumbs.db
+
+    
