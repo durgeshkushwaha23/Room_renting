@@ -28,29 +28,53 @@ export async function registerUser(req, res) {
 }
 
 export async function loginUser(req, res) {
+ 
+  //   const { email, password } = req.body;
+
+  //   // Check if the user exists
+  //   const user = await User.findOne({ email });
+  //   if (!user) {
+  //     return res.status(400).json({ message: 'Invalid email or password' });
+  //   }
+
+  //   // Check if the password is correct
+  //   const isMatch = await bcrypt.compare(password, user.password);
+  //   if (!isMatch) {
+  //     return res.status(400).json({ message: 'Invalid email or password' });
+  //   }
+
+  //   // Generate JWT token
+  //   const token = jwt.sign({ id: user._id, role: user.role }, process.env.your_jwt_secret, {
+  //     expiresIn: '10h'
+  //   });
+
+  //   res.status(200).json({ message: 'Login successful', token });
+  // } catch (error) {
+  //   res.status(500).json({ message: 'Server error', error: error.message });
+  // }
   try {
     const { email, password } = req.body;
 
-    // Check if the user exists
+    // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
-    }
+    if (!user) return res.status(400).json({ message: "User not found" });
 
-    // Check if the password is correct
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password' });
-    }
+    // Check password
+    const isMatch =  bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-    // Generate JWT token
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.your_jwt_secret, {
-      expiresIn: '1h'
-    });
+    // Generate JWT Token
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.your_jwt_secret , { expiresIn: "7d" });
 
-    res.status(200).json({ message: 'Login successful', token });
+    // Debugging logs
+    console.log("Login Successful!");
+   
+
+    // Send response
+    res.json({ token, user });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
@@ -62,3 +86,15 @@ export async function logout(req, res) {
     res.status(200).json({ message: 'Logout successful' });
   });
 }
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

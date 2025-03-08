@@ -1,4 +1,3 @@
-// filepath: c:\Users\HP\Desktop\room_rent\Backend\Controllers\ownerController.js
 import Room from '../model/room.js';
 import cloudinary from '../Config/cloudinaryConfig.js';
 

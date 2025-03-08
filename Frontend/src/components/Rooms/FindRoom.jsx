@@ -7,36 +7,11 @@ const dummyRooms = [
     description: "A beautiful and fully furnished studio apartment in a prime location.",
     price: "₹12,000/month",
     location: "Mumbai, Maharashtra",
-    amenities: ["WiFi", "AC", "Parking"],
+    rules: ["noSmoking", "comes before 10pm"],
     image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9vbXxlbnwwfHwwfHx8MA%3D%3D",
   },
-  {
-    id: 2,
-    title: "Spacious 2BHK Flat",
-    description: "Perfect for families. Includes a kitchen, balcony, and 24/7 security.",
-    price: "₹18,500/month",
-    location: "Bangalore, Karnataka",
-    amenities: ["Gym", "Swimming Pool", "Security"],
-    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9vbXxlbnwwfHwwfHx8MA%3D%3D",
-  },
-  {
-    id: 3,
-    title: "Luxury PG for Students",
-    description: "PG with all modern facilities including food, WiFi, and housekeeping.",
-    price: "₹8,000/month",
-    location: "Delhi, India",
-    amenities: ["Food", "WiFi", "Laundry"],
-    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9vbXxlbnwwfHwwfHx8MA%3D%3D",
-  },
-  {
-    id: 4,
-    title: "1BHK Apartment in Pune",
-    description: "Semi-furnished, near metro station, and has a great city view.",
-    price: "₹15,000/month",
-    location: "Pune, Maharashtra",
-    amenities: ["Metro Nearby", "Balcony", "Furnished"],
-    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9vbXxlbnwwfHwwfHx8MA%3D%3D",
-  },
+
+
 ];
 
 const FindRoom = () => {
@@ -73,23 +48,23 @@ const FindRoom = () => {
                 <p className="text-lg font-bold text-blue-600 mt-2">{room.price}</p>
                 <p className="text-sm text-gray-500">📍 {room.location}</p>
                 <div className="mt-3">
-                  {room.amenities.map((amenity, index) => (
+                  {room.rules.map((amenity, index) => (
                     <span key={index} className="bg-gray-200 text-gray-800 text-xs font-semibold px-2 py-1 rounded mr-2">
                       {amenity}
                     </span>
                   ))}
                 </div>
-                <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-                  View Details
-                </button>
+            
+
+                </div>
               </div>
-            </div>
+        
           ))
         ) : (
           <p className="text-center text-gray-500">No rooms found for this location.</p>
         )}
       </div>
-    </div>
+    </div>  
   );
 };
 

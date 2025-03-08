@@ -58,10 +58,12 @@ const roomSchema = new mongoose.Schema({
   },
   rules: {
     noSmoking: {
+      // type:String
       type: Boolean,
       default: false,
     },
     petsAllowed: {
+      // type:String
       type: Boolean,
       default: false,
     },

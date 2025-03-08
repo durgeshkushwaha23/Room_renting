@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { registerUser, loginUser ,logout } from '../Controllers/authController.js';
-
+import { registerUser, loginUser ,logout,getMe } from '../Controllers/authController.js';
+import { isAuthenticattion} from "../middleware/authMiddleware.js"
 const router = Router();
 
 // Local authentication routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout',logout)
+router.get('/me', isAuthenticattion, getMe); // Add this route
 
 
 

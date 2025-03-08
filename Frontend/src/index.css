@@ -1,2 +1,24 @@
 
 @import "tailwindcss";
+
+
+
+
+/* Custom Swiper Navigation Buttons */
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(13, 193, 228) !important; /* Change arrow color */
+  background: transparent; /* Add background */
+  /* padding: 10px; */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.swiper-button-prev {
+  left: 4px !important; /* Adjust position */
+}
+
+.swiper-button-next {
+  right: 4px !important;
+}
