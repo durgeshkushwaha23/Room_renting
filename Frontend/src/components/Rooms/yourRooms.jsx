@@ -1,96 +1,147 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../axios/axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import "../../index.css";
-
+import { toast } from "react-toastify";
 
 const YourRooms = () => {
-  const rooms = [
-    {
-      id: 1,
-      title: "Cozy Studio Apartment",
-      description: "A beautiful and fully furnished studio apartment in a prime location.",
-      price: "₹12,000/month",
-      location: "Mumbai, Maharashtra",
-      rules: ["noSmoking", "comes before 10pm"],
-      image: [
-        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9vbXxlbnwwfHwwfHx8MA%3D%3D"
-      ],
-      vido: [
-        "https://media.istockphoto.com/id/1412708059/video/excited-asian-chinese-esports-game-host-streamer-online-live-streaming-hosting-in-game-room.mp4?s=mp4-640x640-is&k=20&c=bluKEREYnbqxES-okuNvMOG4gl4A0nS151fYBOHv-zw="
-      ]
-    },
-    
-  ];
+  const [rooms, setRooms] = useState([]);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("/rooms/user-rooms", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setRooms(res.data);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+      }
+    };
+
+    fetchRooms();
+  }, []);
+
+  const handleCreateRoom = () => {
+    navigate("/create-room");
+  };
+
+  const handleEditRoom = (id) => {
+    navigate(`/edit/${id}`);
+  };
+
+  const handleDeleteRoom = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Unauthorized: Please log in.");
+        return;
+      }
+  
+      const response = await axios.delete(`/rooms/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status === 200) {
+        setRooms(rooms.filter((room) => room._id !== id));
+        toast.success("Room deleted successfully!");
+      }
+    } catch (error) {
+      console.error("Error deleting room:", error.response?.data || error);
+      toast.error("Error deleting room. Please try again.");
+    }
+  };
+  
 
   return (
     <>
-      {/* Create Room Button */}
-      <div className="flex justify-between px-15 items-center p-4">
-        <button className="bg-green-700 text-white px-4 py-2 rounded-md shadow-lg hover:bg-green-800 transition">
+      {/* Create Room Button & Filter */}
+      <div className="flex justify-between px-4 items-center p-4">
+        <button
+          onClick={handleCreateRoom}
+          className="bg-green-700 text-white px-4 py-2 rounded-md shadow-lg hover:bg-green-800 transition"
+        >
           Create New Room
         </button>
 
-        {/* Filter Dropdown */}
-        <select className="bg-gray-100 px-4 p-5 py-2 rounded-md border border-gray-300">
+        <select className="bg-gray-100 px-4 py-2 rounded-md border border-gray-300">
           <option value="latest">Latest</option>
           <option value="oldest">Oldest</option>
         </select>
       </div>
-    <div className="grid px-11 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {rooms.length > 0 ? (
-        rooms.map((room) => (
-          <div key={room.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Swiper for Image & Video */}
-            <Swiper navigation={true} modules={[Navigation]} className="w-full h-56">
-              {room.image.map((img, index) => (
-                <SwiperSlide key={index}>
-                  <img src={img} alt={`Room ${index}`} className="w-full h-full object-cover rounded-t-lg" />
-                </SwiperSlide>
-              ))}
-              {room.vido.map((vid, index) => (
-                <SwiperSlide key={index}>
-                  <video controls className="w-full h-full object-cover rounded-t-lg">
-                    <source src={vid} type="video/mp4" />
-                  </video>
-                </SwiperSlide>
-              ))}
-            </Swiper>
 
-            <div className="p-4">
-              <h2 className="text-xl font-semibold">{room.title}</h2>
-              <p className="text-gray-600">{room.description}</p>
-              <p className="text-lg font-bold text-blue-600 mt-2">{room.price}</p>
-              <p className="text-sm text-gray-500">📍 {room.location}</p>
+      {/* Rooms List */}
+      <div className="grid px-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {rooms.length > 0 ? (
+          rooms.map((room) => (
+            <div key={room._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              {/* Swiper for Image & Video */}
+              {(room.photos.length > 0 || room.videos.length > 0) && (
+                <Swiper navigation={true} modules={[Navigation]} className="w-full h-56">
+                  {room.photos?.map((img, index) => (
+                    <SwiperSlide key={index}>
+                      <img src={img} alt={`Room ${index}`} className="w-full h-full object-cover rounded-t-lg" />
+                    </SwiperSlide>
+                  ))}
+                  {room.videos?.map((vid, index) => (
+                    <SwiperSlide key={index}>
+                      <video controls className="w-full h-full object-cover rounded-t-lg">
+                        <source src={vid} type="video/mp4" />
+                      </video>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
 
-              {/* Rules */}
-              <div className="mt-3 flex flex-wrap gap-2">
-                {room.rules.map((rule, index) => (
-                  <span key={index} className="bg-gray-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded">
-                    {rule}
-                  </span>
-                ))}
-              </div>
+              {/* Room Details */}
+              <div className="p-4">
+                <h2 className="text-xl font-semibold">{room.title}</h2>
+                <p className="text-gray-600">{room.description}</p>
+                <p className="text-lg font-bold text-blue-600 mt-2">₹{room.price}</p>
+                <p className="text-sm text-gray-500">📍 {room.location?.fullAddress}</p>
 
-              {/* Buttons */}
-              <div className="mt-4 flex gap-4">
-                <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-                  Edit
-                </button>
-                <button className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition">
-                  Delete
-                </button>
+                {/* Rules */}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {room.rules?.noSmoking && (
+                    <span className="bg-gray-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded">
+                      No Smoking
+                    </span>
+                  )}
+                  {room.rules?.petsAllowed && (
+                    <span className="bg-gray-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded">
+                      Pets Allowed
+                    </span>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="mt-4 flex gap-4">
+                  <button
+                    onClick={() => handleEditRoom(room._id)}
+                    className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteRoom(room._id)}
+                    className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p className="text-center text-gray-500">No rooms found for this location.</p>
-      )}
-    </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No rooms found.</p>
+        )}
+      </div>
     </>
   );
 };

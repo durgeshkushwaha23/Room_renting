@@ -48,6 +48,8 @@ import Booking from "./components/Rooms/Booking";
 import YourRooms from "./components/Rooms/yourRooms";
 import Logout from "./components/Logout";
 import { ToastContainer } from "react-toastify";
+import CreateRoom from "./components/Rooms/CreateRoom"; // Import CreateRoom component
+import EditRoom from "./components/Rooms/EditRoom";
 
 function App() {
   return (
@@ -63,6 +65,9 @@ function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/yourrooms" element={<YourRooms />} />
+        <Route path="/create-room" element={<CreateRoom />} /> Add CreateRoom route
+        <Route path="/edit/:id" element={<EditRoom />} /> {/* Add EditRoom route */}
+
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </>
