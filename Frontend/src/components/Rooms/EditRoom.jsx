@@ -111,9 +111,14 @@ const EditRoom = () => {
       console.error("Error updating room:", error);
     }
   };
-
+   const  backHandler = () => {
+    navigate("/yourrooms")
+   }
   return (
+    <>
+     <button onClick={backHandler} className="px-4 font-bold bg-red-800 rounded-full text-white py-2" >Back</button>
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-bold text-center text-blue-600 mb-4">
           Edit Room
@@ -244,6 +249,8 @@ const EditRoom = () => {
         </form>
       </div>
     </div>
+    </>
+
   );
 };
 

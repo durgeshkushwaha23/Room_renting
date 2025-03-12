@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { createRoom, editRoom, deleteRoom, getAllRooms,getUserRooms ,getRoomById} from '../Controllers/ownerController.js';
 import { isAuthenticated, isAdmin } from '../middleware/authMiddleware.js';
 import upload from '../middleware/uploadMiddleware.js';
+import {createBooking} from "../Controllers/bookingController.js"
 
 const router = Router();
 
@@ -25,6 +26,10 @@ router.get('/user-rooms', isAuthenticated, getUserRooms);
 
 // Route to get a single room by ID (accessible by authenticated users)
 router.get('/:id', isAuthenticated, getRoomById);
+
+// Route to get bookings created by the authenticated user
+router.post('/user-bookings', isAuthenticated, createBooking);
+
 
 
 export default router; 

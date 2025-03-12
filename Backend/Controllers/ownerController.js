@@ -191,7 +191,6 @@ export async function editRoom(req, res) {
 export async function deleteRoom(req, res) {
   try {
     const { id } = req.params;
-    console.log("Deleting room with ID:", id);
 
     const room = await Room.findById(id);
     if (!room) {
@@ -206,8 +205,6 @@ export async function deleteRoom(req, res) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 }
-
-
 
 
 
@@ -249,3 +246,4 @@ export async function getRoomById(req, res) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 }
+

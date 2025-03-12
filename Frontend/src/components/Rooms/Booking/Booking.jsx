@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import axios from '../../axios/axios';
+import axios from '../../../axios/axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -35,7 +35,7 @@ const Booking = () => {
         },
       });
       toast.success('Booking successful!');
-      navigate('/yourBooking');
+      navigate('/YourBooking');
     } catch (error) {
       toast.error('Error creating booking. Please try again.');
       console.error('Error creating booking:', error);

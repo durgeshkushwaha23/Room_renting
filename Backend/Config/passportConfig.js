@@ -1,4 +1,3 @@
-// filepath: c:\Users\HP\Desktop\Renting_Room\Backend\config\passportConfig.js
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from '../model/user.js';
